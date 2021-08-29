@@ -39,9 +39,9 @@ For the linking you need:
 #       endif /* Py_BUILD_CORE */
 #else
 #   if defined(_DEBUG)
-#       pragma comment(lib,"python39_d.lib")
+#       pragma comment(lib,"python39_d-static.lib")
 #   else
-#       pragma comment(lib,"python39.lib")
+#       pragma comment(lib,"python39-static.lib")
 #   endif /* _DEBUG */
 #   pragma comment(lib,"Pathcch.lib")
 #endif /* MS_COREDLL */
