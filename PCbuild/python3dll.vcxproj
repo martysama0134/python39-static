@@ -97,6 +97,12 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='PGInstrument|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='PGUpdate|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(OutDir)$(TargetName)stub.lib</AdditionalDependencies>
@@ -122,7 +128,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  
   <Target Name="BuildPython3_dDef" BeforeTargets="BuildStubDef" Condition="$(Configuration) == 'Debug'">
     <ItemGroup>
       <_DefLines Remove="@(_DefLines)" />
@@ -148,10 +153,8 @@
     </ItemGroup>
     <MakeDir Directories="$(IntDir)" />
     <Message Text="Updating python3_d.def" Condition="@(_Lines->'%(New)') != @(_OriginalLines)" Importance="high" />
-    <WriteLinesToFile File="$(IntDir)python3_d.def" Lines="@(_Lines->'%(New)')" Overwrite="true"
-                      Condition="@(_Lines->'%(New)') != @(_OriginalLines)" />
+    <WriteLinesToFile File="$(IntDir)python3_d.def" Lines="@(_Lines->'%(New)')" Overwrite="true" Condition="@(_Lines->'%(New)') != @(_OriginalLines)" />
   </Target>
-  
   <Target Name="BuildStubDef" BeforeTargets="PreLinkEvent">
     <ItemGroup>
       <_DefLines Remove="@(_DefLines)" />
@@ -177,7 +180,6 @@
     </ItemGroup>
     <MakeDir Directories="$(IntDir)" />
     <Message Text="Updating python3stub.def" Condition="@(_Lines) != @(_OriginalLines)" Importance="high" />
-    <WriteLinesToFile File="$(IntDir)python3stub.def" Lines="@(_Lines)" Overwrite="true"
-                      Condition="@(_Lines) != @(_OriginalLines)" />
+    <WriteLinesToFile File="$(IntDir)python3stub.def" Lines="@(_Lines)" Overwrite="true" Condition="@(_Lines) != @(_OriginalLines)" />
   </Target>
 </Project>

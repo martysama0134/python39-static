@@ -91,6 +91,12 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>Py_BUILD_CORE;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='PGInstrument|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='PGUpdate|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Py_NO_ENABLE_SHARED;MS_NO_COREDLL;$(PySourcePath)Include;$(PySourcePath)Include\internal;$(PySourcePath)PC;$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,9 +126,7 @@
       <UcrtName>ucrtbase</UcrtName>
       <UcrtName Condition="'$(Configuration)' == 'Debug'">ucrtbased</UcrtName>
     </PropertyGroup>
-    <Exec Command='setlocal
-set PYTHONPATH=$(PySourcePath)Lib
-"$(OutDir)python$(PyDebugExt).exe" "$(PySourcePath)PC\validate_ucrtbase.py" $(UcrtName)' ContinueOnError="true" />
+    <Exec Command="setlocal&#xD;&#xA;set PYTHONPATH=$(PySourcePath)Lib&#xD;&#xA;&quot;$(OutDir)python$(PyDebugExt).exe&quot; &quot;$(PySourcePath)PC\validate_ucrtbase.py&quot; $(UcrtName)" ContinueOnError="true" />
   </Target>
   <Target Name="GeneratePythonBat" AfterTargets="AfterBuild">
     <PropertyGroup>
@@ -147,21 +151,12 @@ $(_PGOPath)
   </Target>
   <Target Name="GenerateLicense" AfterTargets="AfterBuild">
     <ItemGroup>
-      <LicenseFiles Include="$(PySourcePath)LICENSE;
-                             $(PySourcePath)PC\crtlicense.txt;
-                             $(bz2Dir)LICENSE;
-                             $(opensslOutDir)LICENSE;
-                             $(libffiDir)LICENSE;" />
-      <LicenseFiles Include="$(tcltkDir)tcllicense.terms;
-                             $(tcltkDir)tklicense.terms;
-                             $(tcltkDir)tixlicense.terms" Condition="$(IncludeTkinter)" />
+      <LicenseFiles Include="$(PySourcePath)LICENSE;&#xD;&#xA;                             $(PySourcePath)PC\crtlicense.txt;&#xD;&#xA;                             $(bz2Dir)LICENSE;&#xD;&#xA;                             $(opensslOutDir)LICENSE;&#xD;&#xA;                             $(libffiDir)LICENSE;" />
+      <LicenseFiles Include="$(tcltkDir)tcllicense.terms;&#xD;&#xA;                             $(tcltkDir)tklicense.terms;&#xD;&#xA;                             $(tcltkDir)tixlicense.terms" Condition="$(IncludeTkinter)" />
       <_LicenseFiles Include="@(LicenseFiles)">
         <Content Condition="Exists(%(FullPath))">$([System.IO.File]::ReadAllText(%(FullPath)))</Content>
       </_LicenseFiles>
     </ItemGroup>
-
-    <WriteLinesToFile File="$(OutDir)LICENSE.txt"
-                      Overwrite="true"
-                      Lines="@(_LicenseFiles->'%(Content)')" />
+    <WriteLinesToFile File="$(OutDir)LICENSE.txt" Overwrite="true" Lines="@(_LicenseFiles->'%(Content)')" />
   </Target>
 </Project>

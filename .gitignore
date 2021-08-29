@@ -3,6 +3,7 @@ Release/
 Debug/
 obj/
 externals/
+win32/
 
 *.db
 *.lib
